@@ -1,16 +1,19 @@
 "use client";
 
-import React,{ReactNode, createContext, useState} from "react";
-import { User , UserContextType } from "@/types/user";
+import { Application, ApplicationContextType } from "@/types/application";
+import { createContext, useContext, useState } from "react";
 
-export const context = createContext<UserContextType | {}>({user:{}})
+export const appContext = createContext<ApplicationContextType | {}>({application:{},setApplication:()=>{}});
 
-export const ContextProvider=({children}:any)=>{
-    const [user,setUser]=useState<User>({});
+export const useAppContext=()=>(useContext(appContext) as ApplicationContextType);
+
+export const ApplicationProvider=({children}:any)=>{
+    const [application,setApplication]=useState<Application>({});
+
     return (
-        <context.Provider value={{user,setUser}}>
+        <appContext.Provider value={{application,setApplication}}>
             {children}
             {/* <Toaster/> */}
-        </context.Provider>
+        </appContext.Provider>
     )
 }

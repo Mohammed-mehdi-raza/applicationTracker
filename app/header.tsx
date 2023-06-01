@@ -1,22 +1,22 @@
 "use client";
 
-import * as React from 'react';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import { context } from '@/components/client';
+import Toolbar from '@mui/material/Toolbar';
 import Link from "next/link";
-import { UserContextType } from '@/types/user';
+import * as React from 'react';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import {logout} from "./redux/features/userSlice";
 
 const Header = () => {
-
-  const {user} = React.useContext(context) as UserContextType;
+  const user = useAppSelector((state)=>state.userReducer.value);
+  const dispatch = useAppDispatch();
 
   const logoutHandeler=()=>{
-    console.log("wmkn");
+    dispatch(logout());
   }
     
   return (
@@ -27,17 +27,16 @@ const Header = () => {
             <IconButton
                 size="large"
                 edge="start"
-                color="inherit"
                 aria-label="menu"
                 sx={{ mr: 2 }}
             >
-                <ContentPasteSearchIcon/>
+              <ContentPasteSearchIcon/>
             </IconButton>
           </Link>
           {
-            user?._id ?
+            user?.email?
             <Button onClick={logoutHandeler} color="inherit">Logout</Button>
-            : <Link href={"/login"}>Login</Link>
+            : <Link className='link' href={"/login"}>Login</Link>
           }
         </Toolbar>
       </AppBar>

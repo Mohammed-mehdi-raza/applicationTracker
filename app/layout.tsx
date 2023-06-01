@@ -1,7 +1,8 @@
-import './globals.css'
+import { ApplicationProvider } from '@/components/client';
 import { Inter } from 'next/font/google';
+import './globals.css';
 import Header from './header';
-import { ContextProvider } from '@/components/client';
+import { Providers } from './redux/provider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,12 +19,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ContextProvider>
-          <>
-            <Header/>
-            {children}
-          </>
-        </ContextProvider>
+        <Providers>
+          <ApplicationProvider>
+            <>
+              <Header/>
+              {children}
+            </>
+          </ApplicationProvider>
+        </Providers>
       </body>
     </html>
   )
