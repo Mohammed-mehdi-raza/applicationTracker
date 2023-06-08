@@ -5,10 +5,10 @@ import { connectDB } from "../../../../utils/features";
 const handeler = asyncError(async(req,res)=>{
     const applicationId = req.query.id;
 
-    const application = Application.findById(applicationId);
+    const application = await Application.findById(applicationId);
 
     if(!application){
-        return errorHandeler(res,200,"applicatin not found");
+        return errorHandeler(res,200,"application not found");
     }
 
     await connectDB();

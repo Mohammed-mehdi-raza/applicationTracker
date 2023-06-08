@@ -41,7 +41,7 @@ const ApplicationForm = () => {
                 if(!us.data.success){
                     toast.error(us.data.message);
                 }
-                dispatch(add(applicationData));
+                dispatch(add(us.data.ne));
                 toast.success(us.data.message);
             } catch (error:any) {
                 toast.error(error.message);

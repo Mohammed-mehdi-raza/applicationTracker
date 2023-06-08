@@ -13,7 +13,7 @@ const handeler = asyncError(async(req,res)=>{
         return errorHandeler(res,201,"Enter all fields");
     }
     await connectDB();
-    await Application.create({
+    const ne=await Application.create({
         Name,
         Role,
         Location,
@@ -24,6 +24,7 @@ const handeler = asyncError(async(req,res)=>{
     res.status(200).json({
         success:true,
         message:"Application added Succesfully",
+        ne
     })
 })
 
