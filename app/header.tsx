@@ -10,13 +10,24 @@ import Link from "next/link";
 import * as React from 'react';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import {logout} from "./redux/features/userSlice";
+import * as api from "./redux/services/userApi";
+import { toast } from 'react-hot-toast';
 
 const Header = () => {
   const user = useAppSelector((state)=>state.userReducer.value);
   const dispatch = useAppDispatch();
 
-  const logoutHandeler=()=>{
-    dispatch(logout());
+  const logoutHandeler=async()=>{
+    try{
+      const us = await api.LOGOUT();
+      if(!us.data.success){
+        toast.error(us.data.message);
+      }
+      toast.success(us.data.message);
+      dispatch(logout());
+    } catch(err:any){
+      return toast.error(err.message);
+    }
   }
     
   return (
@@ -35,7 +46,7 @@ const Header = () => {
           </Link>
           {
             user?.email?
-            <Button onClick={logoutHandeler} color="inherit">Logout</Button>
+            <Button onClick={logoutHandeler} color="secondary">Logout</Button>
             : <Link className='link' href={"/login"}>Login</Link>
           }
         </Toolbar>

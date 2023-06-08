@@ -5,25 +5,38 @@ import React ,{useState} from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Search } from '@/types/search';
-import { useAppDispatch } from '@/app/redux/hooks';
-import { filter } from '@/app/redux/features/applicationsSlice';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { filter,setPage } from '@/app/redux/features/applicationsSlice';
+import toast from "react-hot-toast";
+import * as api from "../app/redux/services/applicationApi";
+import { useAppContext } from './client';
 
 const Filter = () => {
 
   const [fil,setFil] =useState<Boolean>(true);
-  const [state,setState]=useState<Search>({});
   const dispatch=useAppDispatch();
+  const id = useAppSelector((state)=>state.userReducer.value._id);
+  const {search,setSearch} =useAppContext();
 
   const clickHandeler=()=>{
     setFil(!fil);
   }
 
-  const searchHandeler=(e:any)=>{
-    dispatch(filter(state));
+  const searchHandeler=async(e:any)=>{
+    try {
+      const res = await api.FILTER(search,id,1);
+      if(!res.data.success){
+        toast.error(res.data.message);
+      }
+      dispatch(filter(res.data.app));
+      dispatch(setPage(res.data.totalPage));
+    } catch (error:any) {
+      toast.error(error.message);
+    }
   }
 
   const handleChange=(e:any)=>{
-    setState({...state,[e.target.name]:e.target.value}); 
+    setSearch({...search,[e.target.name]:e.target.value}); 
   }
 
   return (
@@ -31,7 +44,7 @@ const Filter = () => {
       {
         fil ?
         <div className="f">
-          <Button variant="text" color="success" onClick={clickHandeler}> <FilterListIcon/> Filter</Button>
+          <Button variant="outlined" color="secondary" onClick={clickHandeler}> <FilterListIcon/> Filter</Button>
         </div> 
         : 
         <div className="filterContainer">
@@ -39,26 +52,26 @@ const Filter = () => {
             <Button variant="text" color="error"  onClick={clickHandeler}><ClearIcon/></Button>
           </div>
           <div className="filterForm">
-            <TextField type="text" size='small' required variant='outlined' color='primary' name="search" placeholder='Search Box' onChange={handleChange} value={state.search}></TextField>
-            <center><FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <TextField type="text" size='small' required variant='outlined' color='secondary' name="Search" placeholder='Search Box' onChange={handleChange} value={search.Search}></TextField>
+            <center><FormControl sx={{ m: 1, minWidth: 120 }} size="small" color="secondary">
                   <InputLabel id="demo-select-small-label">Category</InputLabel>
                   <Select
                       labelId="demo-select-small-label"
                       id="demo-select-small"
                       label="Category"
-                      name='category'
+                      name='Category'
                       onChange={handleChange}
-                      value={state.category}
+                      value={search.Category}
                   >
                       <MenuItem value="None"><em>None</em></MenuItem>
-                      <MenuItem value="Name of the Company">Name of the Company</MenuItem>
+                      <MenuItem value="Name">Name of the Company</MenuItem>
                       <MenuItem value="Role">Role</MenuItem>
                       <MenuItem value="Location">Location</MenuItem>
                       <MenuItem value="Status">Status</MenuItem>
                       <MenuItem value="CTC">CTC</MenuItem>
                   </Select>
               </FormControl></center>
-              <Button variant="text" color="primary" onClick={searchHandeler}>search</Button>
+              <Button variant="contained" color="secondary" onClick={searchHandeler}>search</Button>
           </div>
         </div>
       }
@@ -66,4 +79,4 @@ const Filter = () => {
   )
 }
 
-export default Filter
+export default Filter;

@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { register } from '../redux/features/userSlice';
 import { redirect } from 'next/navigation';
 import {toast} from "react-hot-toast"
+import * as api from "../redux/services/userApi";
 
 const Page = () => {
 
@@ -24,15 +25,26 @@ const Page = () => {
     }
   }
 
-  const handleSubmit=()=>{
+  const handleSubmit=async()=>{
     if(pass.pass===pass.cPass){
-      dispatch(register({...data,password:pass.pass}));
+      try {
+        const us = await api.REGISTER({...data,password:pass.pass});
+        if(!us.data.success){
+          return toast.error(us.data.message);
+        }
+        toast.success(us.data.message);
+        dispatch(register(us.data.user));
+      } catch (error:any) {
+        toast.error(error);
+      }
+
+
     }else{
       toast.error("password does not match");
     }
   }
 
-  if(user.email){
+  if(user._id){
     redirect('/');
   }
 
@@ -40,13 +52,13 @@ const Page = () => {
     <div className="container">
         <div className="register">
             <div className="four">
-                <TextField type="text" size="small" required variant='outlined' color='primary' placeholder='First Name' name="firstName" value={data.firstName} onChange={handleChange}></TextField>
-                <TextField type="text" size="small" required variant='outlined' color='primary' placeholder='Last Name' name="lastName" value={data.lastName} onChange={handleChange}></TextField>
-                <TextField type="email" size="small" required variant='outlined' color='primary' placeholder='Email' name="email" value={data.email} onChange={handleChange}></TextField>
-                <TextField type="password" size="small" required variant='outlined' color='primary' placeholder='Password' name="pass" value={pass.pass} onChange={handleChange}></TextField>
+                <TextField type="text" size="small" required variant='outlined' color='secondary' placeholder='First Name' name="firstName" value={data.firstName} onChange={handleChange}></TextField>
+                <TextField type="text" size="small" required variant='outlined' color='secondary' placeholder='Last Name' name="lastName" value={data.lastName} onChange={handleChange}></TextField>
+                <TextField type="email" size="small" required variant='outlined' color='secondary' placeholder='Email' name="email" value={data.email} onChange={handleChange}></TextField>
+                <TextField type="password" size="small" required variant='outlined' color='secondary' placeholder='Password' name="pass" value={pass.pass} onChange={handleChange}></TextField>
             </div>
-            <center><TextField type="password" size="small" required variant='outlined' color='primary' placeholder='Confirm Password' name="cPass" value={pass.cPass} onChange={handleChange}></TextField></center>
-            <center><Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>Submit</Button></center>
+            <center><TextField type="password" size="small" required variant='outlined' color='secondary' placeholder='Confirm Password' name="cPass" value={pass.cPass} onChange={handleChange}></TextField></center>
+            <center><Button type="submit" variant="contained" color="secondary" onClick={handleSubmit}>Submit</Button></center>
             <center><p>OR</p></center>
             <center><Link href="/login" className='link'>Login</Link></center>
         </div>

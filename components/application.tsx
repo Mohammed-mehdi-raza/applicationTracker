@@ -8,6 +8,9 @@ import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useAppContext } from './client';
 import { useAppDispatch } from "@/app/redux/hooks";
 import { del } from "@/app/redux/features/applicationsSlice";
+import * as api from "../app/redux/services/applicationApi";
+import { toast } from "react-hot-toast";
+import {green} from "@mui/material/colors"
 
 const Application = (props:Application) => {
     const ctc:string=String(props.CTC);
@@ -19,19 +22,28 @@ const Application = (props:Application) => {
         setApplication(props);
     }
 
-    const deleteHandler=()=>{
-        dispatch(del(props));
+    const deleteHandler=async()=>{
+        try {
+            const us = await api.DELETE(props);
+            if(!us.data.success){
+                toast.error(us.data.message);
+            }
+            dispatch(del(props));
+            toast.success(us.data.message);
+        } catch (error:any) {
+            toast.error(error.message);
+        }
     }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="transparent">
+        <AppBar position="static" color="primary">
             <Toolbar className='app'>
-                <Typography>{props.Name}</Typography>
-                <Typography>{props.Role}</Typography>
-                <Typography>{props.Location} </Typography>
-                <Typography>{ctc} </Typography>
-                <Typography>{props.Status}</Typography>
+                <Typography color={green[500]} >{props.Name}</Typography>
+                <Typography color={green[500]}>{props.Role}</Typography>
+                <Typography color={green[500]}>{props.Location} </Typography>
+                <Typography color={green[500]}>{ctc} </Typography>
+                <Typography color={green[500]}>{props.Status}</Typography>
                 <Button variant='text' color="secondary" onClick={editHandler} ><EditIcon/> </Button>
                 <Button variant='text' color="error" onClick={deleteHandler} ><DeleteIcon/> </Button>
             </Toolbar>

@@ -3,15 +3,16 @@
 import ApplicationForm from "@/components/applicationForm";
 import Applications from "@/components/applications";
 import Filter from "@/components/filter";
-import { useAppSelector } from "./redux/hooks";
 import { redirect } from "next/navigation";
+import { useAppSelector } from "./redux/hooks";
+import Paginate from "@/components/Paginate";
 
 
 export default function Home() {
 
   const user = useAppSelector((state)=>state.userReducer.value);
 
-  if(!user.email){
+  if(!user._id){
     redirect("/login");
   }
 
@@ -22,7 +23,9 @@ export default function Home() {
         <Filter/>
         <ApplicationForm/>
       </div>
-      <div className="pagination"></div>
+      <div className="pagination">
+        <Paginate/>
+      </div>
     </div>
   )
 }

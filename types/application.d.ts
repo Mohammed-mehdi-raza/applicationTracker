@@ -1,3 +1,5 @@
+import { Search } from "./search"
+
 export interface Application{
     _id?: string,
     Name?: String,
@@ -9,6 +11,8 @@ export interface Application{
 
 export type ApplicationContextType={
     application:Application,
-	setApplication:(value:React.SetStateAction<Application>)=>void
+	setApplication:(value:React.SetStateAction<Application>)=>void,
+	search:Search,
+	setSearch:(value:React.SetStateAction<Search>)=>void
 }
 

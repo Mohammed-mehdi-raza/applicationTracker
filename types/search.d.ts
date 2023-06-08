@@ -1,4 +1,4 @@
 export interface Search{
-    search?:string,
-    category?:string,
+    Search?:string,
+    Category?:string,
 }
