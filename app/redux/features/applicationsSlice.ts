@@ -7,8 +7,6 @@ const initialState={
     totalPage:0 as number
 }
 
-// const initialState:Application[]=[];
-
 export const applications=createSlice({
     name:"applications",
     initialState,

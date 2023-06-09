@@ -6,7 +6,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Search } from '@/types/search';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { filter,setPage } from '@/app/redux/features/applicationsSlice';
+import { filter,setPage,fetchAll } from '@/app/redux/features/applicationsSlice';
 import toast from "react-hot-toast";
 import * as api from "../app/redux/services/applicationApi";
 import { useAppContext } from './client';
@@ -18,8 +18,14 @@ const Filter = () => {
   const id = useAppSelector((state)=>state.userReducer.value._id);
   const {search,setSearch} =useAppContext();
 
-  const clickHandeler=()=>{
+  const clickHandeler=async()=>{
     setFil(!fil);
+    const ap = await api.FETCHALL(id,1);
+    if(!ap.data.success){
+      toast.error(ap.data.message);
+    }
+    dispatch(fetchAll(ap.data.applications));
+    dispatch(setPage(ap.data.totalPage));
   }
 
   const searchHandeler=async(e:any)=>{
