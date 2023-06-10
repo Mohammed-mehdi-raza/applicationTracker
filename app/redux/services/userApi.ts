@@ -2,7 +2,8 @@ import { User } from "@/types/user";
 import axios from "axios";
 
 // const url = "http://localhost:3000/";
-const url ="https://application-tracker-563.netlify.app/";
+// const url ="https://application-tracker-563.netlify.app";
+const url = process.env.URL;
 
 const API = axios.create({baseURL:url});
 

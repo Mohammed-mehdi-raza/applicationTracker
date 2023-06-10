@@ -4,8 +4,8 @@ import { Application } from "@/types/application";
 import { Search } from "@/types/search";
 
 // const url = "http://localhost:3000/";
-const url ="https://application-tracker-563.netlify.app/";
-
+// const url ="https://application-tracker-563.netlify.app";
+const url = process.env.URl;
 
 const API = axios.create({baseURL:url});
 

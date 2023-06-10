@@ -1,16 +1,15 @@
 "use client";
 
-import React,{useEffect} from "react";
+import { del } from "@/app/redux/features/applicationsSlice";
+import { useAppDispatch } from "@/app/redux/hooks";
 import { Application } from '@/types/application';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { useAppContext } from './client';
-import { useAppDispatch } from "@/app/redux/hooks";
-import { del } from "@/app/redux/features/applicationsSlice";
-import * as api from "../app/redux/services/applicationApi";
+import { green } from "@mui/material/colors";
 import { toast } from "react-hot-toast";
-import {green} from "@mui/material/colors"
+import * as api from "../app/redux/services/applicationApi";
+import { useAppContext } from './client';
 
 const Application = (props:Application) => {
     const ctc:string=String(props.CTC);
