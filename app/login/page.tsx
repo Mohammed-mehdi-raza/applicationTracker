@@ -1,6 +1,6 @@
 "use client";
 
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { TextField ,Button } from '@mui/material';
 import Link from "next/link";
 import { User } from '@/types/user';
@@ -41,9 +41,15 @@ const Page = () => {
     }
   }
 
-  if(user._id){
-    redirect("/")
-  }
+  // if(user._id){
+  //   redirect("/")
+  // }
+
+  useEffect(()=>{
+    if(user._id){
+      redirect('/');
+    }
+  },[user]);
 
   return (
     <div className="container">
