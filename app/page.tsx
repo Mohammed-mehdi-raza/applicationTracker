@@ -7,12 +7,12 @@ import { redirect } from "next/navigation";
 import { useAppSelector } from "./redux/hooks";
 import Paginate from "@/components/Paginate";
 
-
 export default function Home() {
 
   const user = useAppSelector((state)=>state.userReducer.value);
 
   if(!user._id){
+    console.log("hell");
     redirect("/login");
   }
 
