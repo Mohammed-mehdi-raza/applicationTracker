@@ -12,7 +12,7 @@ const handeler = asyncError(async(req,res)=>{
 
     if(req.method === "GET"){
         const applications = await Application.find({CreatedBy:id}).sort({CreatedAt:-1}).limit(LIMIT).skip(startIndex);
-        let total = applications.length;
+        let total = await Application.countDocuments({});
         res.status(200).json({
             success:true,
             applications,
