@@ -165,7 +165,7 @@ body {
 }
 
 .app{
-  display: grid;
+  display: grid !important;
   grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr;
   justify-content: space-around;
 }
